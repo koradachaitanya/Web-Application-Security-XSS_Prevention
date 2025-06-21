@@ -1,0 +1,273 @@
+:root {
+    --bg-dark: #181028;
+    --card-bg: #22143a;
+    --gradient: linear-gradient(90deg, #a259ff 0%, #f72585 100%);
+    --matrix-green: #00ff41;
+    --cyber-blue: #00d4ff;
+    --warning-red: #ff3333;
+    --secure-green: #00ffb3;
+    --vuln-pink: #f72585;
+    --text-main: #f3eaff;
+    --text-muted: #b0a8c9;
+    --border-radius: 10px;
+}
+
+body {
+    background: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Fira Code', 'Consolas', 'Menlo', 'Monaco', monospace;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+body.secure-mode .xss-vulnerable {
+    display: none;
+}
+body.vulnerable-mode .xss-sanitized {
+    display: none;
+}
+.xss-header {
+    max-width: 900px;
+    margin: 2rem auto 1.5rem auto;
+    padding: 1.5rem 2rem;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 24px 0 #a259ff44;
+    border-left: 6px solid var(--vuln-pink);
+}
+.xss-header h1 {
+    margin-top: 0;
+    color: var(--vuln-pink);
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 8px var(--vuln-pink), 0 0 2px #000;
+}
+.xss-header p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.xss-modes {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+.xss-modes label {
+    font-size: 1.1rem;
+    cursor: pointer;
+    user-select: none;
+}
+.vuln-label {
+    color: var(--vuln-pink);
+    font-weight: bold;
+}
+.secure-label {
+    color: var(--secure-green);
+    font-weight: bold;
+}
+
+.xss-payloads {
+    max-width: 900px;
+    margin: 0 auto 1.5rem auto;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1rem 2rem;
+    box-shadow: 0 0 12px #f7258533;
+}
+.xss-payloads h2 {
+    margin-top: 0;
+    color: var(--cyber-blue);
+    font-size: 1.2rem;
+}
+.payload-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 0.7rem;
+}
+.payload-list button {
+    background: var(--gradient);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.4rem 1rem;
+    font-family: inherit;
+    font-size: 0.98rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #a259ff44;
+    transition: background 0.2s, color 0.2s;
+}
+.payload-list button:hover {
+    background: linear-gradient(90deg, #f72585 0%, #a259ff 100%);
+    color: #fff;
+}
+
+.xss-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0 1.5rem 0;
+    gap: 0.7rem;
+}
+.xss-form input[type="text"], .xss-form textarea {
+    width: 400px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    border: 2px solid var(--cyber-blue);
+    border-radius: 6px;
+    padding: 0.7rem;
+    font-size: 1rem;
+    font-family: inherit;
+    box-shadow: 0 0 8px #a259ff33;
+    transition: border 0.2s;
+}
+.xss-form input[type="text"]:focus, .xss-form textarea:focus {
+    outline: none;
+    border: 2px solid var(--vuln-pink);
+}
+.xss-form button[type="submit"], .xss-form button {
+    background: var(--gradient);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.5rem;
+    font-size: 1.1rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px #a259ff44;
+    transition: background 0.2s, color 0.2s;
+}
+.xss-form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #f72585 0%, #a259ff 100%);
+    color: #fff;
+}
+
+.xss-demo-sections {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2.5rem;
+    max-width: 1100px;
+    gap: 2rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+.xss-section {
+    width: 48%;
+    padding: 1rem 1.2rem;
+    border-radius: var(--border-radius);
+    background: var(--card-bg);
+    box-shadow: 0 0 16px 0 #a259ff33;
+}
+.xss-vulnerable {
+    border: 2px solid var(--vuln-pink);
+}
+.xss-sanitized {
+    border: 2px solid var(--secure-green);
+}
+.xss-section h2 {
+    margin-top: 0;
+    font-size: 1.15rem;
+}
+.code-compare {
+    background: #181028;
+    border-radius: 6px;
+    padding: 0.5rem 0.7rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    border-left: 4px solid var(--cyber-blue);
+    box-shadow: 0 0 8px #00d4ff22;
+}
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0 0;
+}
+li {
+    background: #23272f;
+    color: var(--text-main);
+    margin-bottom: 0.7rem;
+    padding: 0.7rem 1rem;
+    border-radius: 5px;
+    font-size: 1.05rem;
+    box-shadow: 0 1px 4px #a259ff33;
+    word-break: break-word;
+    border-left: 4px solid var(--cyber-blue);
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+.xss-vulnerable li {
+    border-left: 4px solid var(--vuln-pink);
+}
+.xss-sanitized li {
+    border-left: 4px solid var(--secure-green);
+}
+.comment-meta {
+    font-size: 0.92em;
+    color: var(--text-muted);
+    margin-bottom: 0.1em;
+    display: flex;
+    gap: 1em;
+}
+.comment-user {
+    color: var(--cyber-blue);
+    font-weight: bold;
+}
+.comment-time {
+    color: var(--matrix-green);
+    font-size: 0.9em;
+}
+.comment-content {
+    color: var(--text-main);
+    font-family: inherit;
+}
+
+.xss-best-practices {
+    max-width: 900px;
+    margin: 2.5rem auto 2rem auto;
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.2rem 2rem;
+    box-shadow: 0 0 12px #a259ff33;
+    border-left: 6px solid var(--secure-green);
+}
+.xss-best-practices h2 {
+    color: var(--secure-green);
+    margin-top: 0;
+    font-size: 1.2rem;
+}
+.xss-best-practices ul {
+    margin: 0.7rem 0 0 1.2rem;
+    padding: 0;
+    list-style: disc;
+}
+.xss-best-practices li {
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+}
+.xss-best-practices code {
+    background: #23272f;
+    color: var(--matrix-green);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+@media (max-width: 900px) {
+    .xss-demo-sections {
+        flex-direction: column;
+        max-width: 98vw;
+        gap: 1.5rem;
+    }
+    .xss-section {
+        width: 100%;
+    }
+    .xss-form input[type="text"], .xss-form textarea {
+        width: 95vw;
+        min-width: 180px;
+    }
+}

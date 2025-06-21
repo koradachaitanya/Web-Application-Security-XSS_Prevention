@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>XSS Demo: Vulnerability vs Prevention</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="xss-header">
+        <h1>XSS Vulnerability Demo</h1>
+        <p>
+            <strong>Cross-Site Scripting (XSS)</strong> is a critical web security flaw that allows attackers to inject malicious scripts into web pages viewed by others.<br>
+            This demo lets you explore both <span class="vuln-label">Vulnerable</span> and <span class="secure-label">Secure</span> modes, try real XSS payloads, and see how proper input sanitization prevents attacks.
+        </p>
+    </header>
+ 
+
+    <section class="xss-payloads">
+        <h2>⚡ Try Common XSS Payloads</h2>
+        <div class="payload-list">
+            <button type="button" onclick="setPayload(`<script>alert('XSS')</script>`)">&lt;script&gt;alert('XSS')&lt;/script&gt;</button>
+            <button type="button" onclick="setPayload(`<img src=x onerror='alert(1)'>`)">&lt;img src=x onerror='alert(1)'&gt;</button>
+            <button type="button" onclick="setPayload(`<svg onload=alert('SVG')></svg>`)">&lt;svg onload=alert('SVG')&gt;&lt;/svg&gt;</button>
+            <button type="button" onclick="setPayload(`<iframe src='javascript:alert(2)'></iframe>`)">&lt;iframe src='javascript:alert(2)'&gt;&lt;/iframe&gt;</button>
+            <button type="button" onclick="setPayload(`<div onclick='alert(3)'>Click me!</div>`)">&lt;div onclick='alert(3)'&gt;Click me!&lt;/div&gt;</button>
+        </div>
+    </section>
+
+    <form method="POST" class="xss-form">
+        <input type="text" name="username" id="username" placeholder="Your name" required>
+        <textarea name="comment" id="comment" rows="3" placeholder="Try an XSS payload above or write your own..." required></textarea>
+        <button type="submit">Post Comment</button>
+    </form>
+
+    <div class="xss-demo-sections">
+        <!-- Vulnerable Section -->
+        <div class="xss-section xss-vulnerable">
+            <h2 class="vuln-label">Vulnerable Output</h2>
+            <div class="code-compare">
+                <pre><code>
+# Vulnerable: Direct rendering
+return f"&lt;div&gt;{username}: {comment}&lt;/div&gt;"
+                </code></pre>
+            </div>
+            <ul>
+                {% for comment in vulnerable_comments %}
+                    <li>
+                        <span class="comment-meta">
+                            <span class="comment-user">{{ comment.username|e }}</span>
+                        </span>
+                        <span class="comment-content">{{ comment.comment|safe }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Sanitized Section -->
+        <div class="xss-section xss-sanitized">
+            <h2 class="secure-label">Secure Output</h2>
+            <div class="code-compare">
+                <pre><code>
+# Secure: HTML entity encoding
+safe_comment = bleach.clean(comment)
+return f"&lt;div&gt;{username}: {safe_comment}&lt;/div&gt;"
+                </code></pre>
+            </div>
+            <ul>
+                {% for comment in sanitized_comments %}
+                    <li>
+                        <span class="comment-meta">
+                            <span class="comment-user">{{ comment.username|e }}</span>
+                        </span>
+                        <span class="comment-content">{{ comment.comment|safe }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <section class="xss-best-practices">
+        <h2>📚 XSS Prevention Best Practices</h2>
+        <ul>
+            <li><span class="secure-label">Sanitize</span> all user input before rendering it in HTML.</li>
+            <li>Use libraries like <code>bleach</code> (Python) or <code>DOMPurify</code> (JavaScript).</li>
+            <li>Apply <span class="secure-label">Content Security Policy (CSP)</span> headers.</li>
+            <li>Never trust user input, even if it looks safe.</li>
+            <li>Keep frameworks and dependencies up to date.</li>
+        </ul>
+    </section>
+
+    <script>
+    // Interactive payload buttons
+    function setPayload(payload) {
+        document.getElementById('comment').value = payload;
+        document.getElementById('comment').focus();
+    }
+    // Mode switcher (for demo only, backend must support it for real switching)
+    document.querySelectorAll('input[name="mode"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.body.classList.toggle('secure-mode', this.value === 'secure');
+            document.body.classList.toggle('vulnerable-mode', this.value === 'vulnerable');
+        });
+    });
+    </script>
+</body>
